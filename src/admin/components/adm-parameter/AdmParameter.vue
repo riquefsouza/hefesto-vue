@@ -1,4 +1,5 @@
 <template>
+    <BarraMenu></BarraMenu>
     <Toast></Toast>
 
     <Panel header="Configuration Parameter" class="p-mb-2">
@@ -140,10 +141,12 @@ export default {
         }
 
         const onDelete = () => {
-            listaAdmParameter.value = listaAdmParameter.value.filter((val: AdmParameter) => val.id !== admParameter.value.id);
-            deleteDialog.value = false;
-            admParameter.value = emptyAdmParameter;
-            toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Deleted', life: 3000});
+            admParameterService.value.delete(admParameter.value.id).then(() => {
+                listaAdmParameter.value = listaAdmParameter.value.filter((val: AdmParameter) => val.id !== admParameter.value.id);
+                deleteDialog.value = false;
+                admParameter.value = emptyAdmParameter;
+                toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Deleted', life: 3000});
+            });   
         };
 
         const exportPdf = () => {

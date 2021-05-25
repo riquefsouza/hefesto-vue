@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BarraMenu></BarraMenu>
         <Toast></Toast>
 
         <Panel header="Configuration User" class="p-mb-2">

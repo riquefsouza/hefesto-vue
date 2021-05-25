@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BarraMenu></BarraMenu>
         <Toast></Toast>
         <div class="centered p-shadow-8" style="width: 350px;">
             <Panel header="Log in" class="p-mb-2">
@@ -65,11 +66,16 @@ export default {
         const login = () => {
             submitted.value = true;
 
-            if (loginService.value.login(admUser.value)) {
-                router.push('/home');
-            } else {
-                toast.add({ severity: 'error', summary: 'Error', detail: 'login now allowed!', life: 3000 });
-            }
+            loginService.value.login(admUser.value).then((islogged: boolean) => {
+                if (islogged) { 
+                    router.push('/home');
+                } else {
+                    toast.add({ severity: 'error', summary: 'Error', detail: 'login not allowed!', life: 3000 });
+                }
+            })
+            .catch(() => {
+                toast.add({ severity: 'error', summary: 'Error', detail: 'login not allowed!', life: 3000 });
+            });
         }
 
         return { admUser, submitted, onClean, login }

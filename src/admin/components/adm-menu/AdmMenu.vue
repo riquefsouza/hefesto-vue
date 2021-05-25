@@ -1,4 +1,5 @@
 <template>
+    <BarraMenu></BarraMenu>
     <Toast></Toast>
 
     <Panel header="Menu" class="p-mb-2">
@@ -67,7 +68,6 @@
 import { ref, onMounted } from 'vue';
 import router from '@/router';
 import { useToast } from 'primevue/usetoast';
-
 import AdmMenuService from '@/admin/services/AdmMenuService';
 import { AdmMenu, emptyAdmMenu } from '@/admin/models/AdmMenu';
 import AdmPageService from '@/admin/services/AdmPageService';
@@ -164,7 +164,7 @@ export default {
             admPageService.value.findAll().then(item => listaAdmPage.value = item);
 
             admMenuService.value
-                .findAllWithPages()
+                .findAll()
                 .then(lista => {
                     listaAdmMenu.value = lista;
 
@@ -220,10 +220,12 @@ export default {
         }
 
         const onDelete = () => {
-            listaAdmMenu.value = listaAdmMenu.value.filter((val: AdmMenu) => val.id !== admMenu.value.id);
-            deleteDialog.value = false;
-            admMenu.value = emptyAdmMenu;
-            toast.add({severity:'success', summary: 'Successful', detail: 'Menu Deleted', life: 3000});
+            admMenuService.value.delete(admMenu.value.id).then(() => {
+                listaAdmMenu.value = listaAdmMenu.value.filter((val: AdmMenu) => val.id !== admMenu.value.id);
+                deleteDialog.value = false;
+                admMenu.value = emptyAdmMenu;
+                toast.add({severity:'success', summary: 'Successful', detail: 'Menu Deleted', life: 3000});
+            });
         };
 
         const onSave = () => {

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BarraMenu></BarraMenu>
         <Toast></Toast>
 
         <Panel header="Configuration Profile" class="p-mb-2">
@@ -139,14 +140,21 @@ export default {
 
 			if (admProfile.value.description.trim()) {
                 if (admProfile.value.id) {
-                    listaAdmProfile.value[admProfileService.value
-                        .findIndexById(listaAdmProfile.value, admProfile.value.id)] = admProfile.value;
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Profile Updated', life: 3000});
+                    admProfileService.value.update(admProfile.value).then((obj: AdmProfile) => {
+                        admProfile.value = obj;
+
+                        listaAdmProfile.value[admProfileService.value
+                            .findIndexById(listaAdmProfile.value, admProfile.value.id)] = admProfile.value;
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Profile Updated', life: 3000});
+                    });
                 }
                 else {
-                    admProfile.value.id = listaAdmProfile.value.length + 1;
-                    listaAdmProfile.value.push(admProfile.value);
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Profile Created', life: 3000});
+                    admProfileService.value.insert(admProfile.value).then((obj: AdmProfile) => {
+                        admProfile.value = obj;
+                        
+                        listaAdmProfile.value.push(admProfile.value);
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Profile Created', life: 3000});
+                    });    
                 }
 
                 admProfile.value = emptyAdmProfile;

@@ -1,4 +1,5 @@
 <template>
+    <BarraMenu></BarraMenu>
     <Toast></Toast>
 
     <Panel header="Configuration Parameter Category" class="p-mb-2">
@@ -60,14 +61,21 @@ export default {
 
 			if (admParameterCategory.value.description.trim()) {
                 if (admParameterCategory.value.id) {
-                    listaAdmParameterCategory.value[admParameterCategoryService.value
-                        .findIndexById(listaAdmParameterCategory.value, admParameterCategory.value.id)] = admParameterCategory.value;
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Category Updated', life: 3000});
+                    admParameterCategoryService.value.update(admParameterCategory.value).then((obj: AdmParameterCategory) => {
+                        admParameterCategory.value = obj;
+
+                        listaAdmParameterCategory.value[admParameterCategoryService.value
+                            .findIndexById(listaAdmParameterCategory.value, admParameterCategory.value.id)] = admParameterCategory.value;
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Category Updated', life: 3000});
+                    });    
                 }
                 else {
-                    admParameterCategory.value.id = listaAdmParameterCategory.value.length + 1;
-                    listaAdmParameterCategory.value.push(admParameterCategory.value);
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Category Created', life: 3000});
+                    admParameterCategoryService.value.insert(admParameterCategory.value).then((obj: AdmParameterCategory) => {
+                        admParameterCategory.value = obj;
+
+                        listaAdmParameterCategory.value.push(admParameterCategory.value);
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Category Created', life: 3000});
+                    });    
                 }
 
                 admParameterCategory.value = emptyAdmParameterCategory;

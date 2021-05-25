@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BarraMenu></BarraMenu>
         <Toast></Toast>
 
         <Panel header="Configuration Parameter" class="p-mb-2">
@@ -82,14 +83,21 @@ export default {
 
 			if (admParameter.value.description.trim()) {
                 if (admParameter.value.id) {
-                    listaAdmParameter.value[admParameterService.value
-                        .findIndexById(listaAdmParameter.value, admParameter.value.id)] = admParameter.value;
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Updated', life: 3000});
+                    admParameterService.value.update(admParameter.value).then((obj: AdmParameter) => {
+                        admParameter.value = obj;
+
+                        listaAdmParameter.value[admParameterService.value
+                            .findIndexById(listaAdmParameter.value, admParameter.value.id)] = admParameter.value;
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Updated', life: 3000});
+                    });    
                 }
                 else {
-                    admParameter.value.id = listaAdmParameter.value.length + 1;
-                    listaAdmParameter.value.push(admParameter.value);
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Created', life: 3000});
+                    admParameterService.value.insert(admParameter.value).then((obj: AdmParameter) => {
+                        admParameter.value = obj;
+
+                        listaAdmParameter.value.push(admParameter.value);
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Parameter Created', life: 3000});
+                    });
                 }
 
                 admParameter.value = emptyAdmParameter;

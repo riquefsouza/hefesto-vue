@@ -1,4 +1,5 @@
 <template>
+    <BarraMenu></BarraMenu>
     <Toast></Toast>
 
     <Panel header="Configuration User" class="p-mb-2">
@@ -85,7 +86,7 @@ export default {
         const deleteDialog = ref<boolean>(false);
 
         onMounted(() => {
-            admUserService.value.findAllWithProfiles().then(item => listaAdmUser.value = item);
+            admUserService.value.findAll().then(item => listaAdmUser.value = item);
 
             cols.value = [
                 { field: 'id', header: 'Id' },
@@ -134,10 +135,12 @@ export default {
         }
 
         const onDelete = () => {
-            listaAdmUser.value = listaAdmUser.value.filter((val: AdmUser) => val.id !== admUser.value.id);
-            deleteDialog.value = false;
-            admUser.value = emptyAdmUser;
-            toast.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
+            admUserService.value.delete(admUser.value.id).then(() => {
+                listaAdmUser.value = listaAdmUser.value.filter((val: AdmUser) => val.id !== admUser.value.id);
+                deleteDialog.value = false;
+                admUser.value = emptyAdmUser;
+                toast.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
+            });
         };
 
         const exportPdf = () => {

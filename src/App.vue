@@ -1,19 +1,18 @@
 <template>
   <div id="app">
-    <BarraMenu></BarraMenu>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { Options, Vue } from 'vue-class-component';
-import BarraMenu from './base/components/BarraMenu.vue';
+import { Vue } from 'vue-class-component';
+import { environment } from './environments/environment';
+import axios from 'axios';
 
-@Options({
-  components: {
-    BarraMenu
-  }
-})
+axios.defaults.baseURL = environment.url;
+//axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';  
+
 export default class App extends Vue {
 
 }

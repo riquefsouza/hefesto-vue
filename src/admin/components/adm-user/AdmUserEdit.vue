@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BarraMenu></BarraMenu>
         <Toast></Toast>
 
         <Panel header="Configuration User" class="p-mb-2">
@@ -114,14 +115,21 @@ export default {
 
 			if (admUser.value.name.trim()) {
                 if (admUser.value.id) {
-                    listaAdmUser.value[admUserService.value
-                        .findIndexById(listaAdmUser.value, admUser.value.id)] = admUser.value;
-                    toast.add({severity:'success', summary: 'Successful', detail: 'User Updated', life: 3000});
+                    admUserService.value.update(admUser.value).then((obj: AdmUser) => {
+                        admUser.value = obj;
+
+                        listaAdmUser.value[admUserService.value
+                            .findIndexById(listaAdmUser.value, admUser.value.id)] = admUser.value;
+                        toast.add({severity:'success', summary: 'Successful', detail: 'User Updated', life: 3000});
+                    });
                 }
                 else {
-                    admUser.value.id = listaAdmUser.value.length + 1;
-                    listaAdmUser.value.push(admUser.value);
-                    toast.add({severity:'success', summary: 'Successful', detail: 'User Created', life: 3000});
+                    admUserService.value.insert(admUser.value).then((obj: AdmUser) => {
+                        admUser.value = obj;
+                        
+                        listaAdmUser.value.push(admUser.value);
+                        toast.add({severity:'success', summary: 'Successful', detail: 'User Created', life: 3000});
+                    });    
                 }
 
                 admUser.value = emptyAdmUser;

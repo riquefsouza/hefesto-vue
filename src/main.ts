@@ -21,6 +21,7 @@ import Password from 'primevue/password';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 
+import BarraMenu from './base/components/BarraMenu.vue';
 import ReportPanel from './base/components/ReportPanel.vue';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
@@ -50,6 +51,7 @@ app.component('Tree', Tree);
 app.component('PickList', PickList);
 app.component('Password', Password);
 app.component('Toast', Toast);
+app.component('BarraMenu', BarraMenu);
 app.component('ReportPanel', ReportPanel);
 
 app.mount('#app');

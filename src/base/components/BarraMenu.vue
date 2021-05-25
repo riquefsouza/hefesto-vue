@@ -14,18 +14,26 @@
         </a>  
       </template>
       <template #end>
-        <Button label="Logout" icon="pi pi-power-off" />
+        <Button label="Logout" icon="pi pi-power-off" @click="logout" />
       </template>
     </Menubar>
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import router from '@/router';
+import UserService from '@/base/user/UserService';
 
 export default {
   setup() {
-    const logged = ref(true);
+    const userService = ref<UserService>(new UserService());
+    const logged = ref(false);
+
+    const logout = () => {
+      userService.value.logout();
+      router.push('/');
+    }
 
     const menuItems = ref([
       {
@@ -39,14 +47,18 @@ export default {
           { label: "User", to: '/admUser' },
           { label: "Change Password", to: '/changePasswordEdit' },
           { label: "Sobre", to: '/about' },
-          { label: "Sair", to: '/' }
+          { label: "Sair", command: () => {logout();} }
         ],
       },
-    ]);
+    ])
 
-    return { logged, menuItems };
-  },
-};
+    onMounted(() => {
+      logged.value = userService.value.isLogged();
+    })
+
+    return { logged, menuItems, logout, userService }
+  }
+}
 </script>
 
 <style></style>

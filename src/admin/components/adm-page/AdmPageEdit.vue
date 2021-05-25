@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BarraMenu></BarraMenu>    
         <Toast></Toast>
 
         <Panel header="Configuration Page" class="p-mb-2">
@@ -104,14 +105,21 @@ export default {
 
 			if (admPage.value.description.trim()) {
                 if (admPage.value.id) {
-                    listaAdmPage.value[admPageService.value
-                        .findIndexById(listaAdmPage.value, admPage.value.id)] = admPage.value;
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Page Updated', life: 3000});
+                    admPageService.value.update(admPage.value).then((obj: AdmPage) => {
+                        admPage.value = obj;
+
+                        listaAdmPage.value[admPageService.value
+                            .findIndexById(listaAdmPage.value, admPage.value.id)] = admPage.value;
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Page Updated', life: 3000});
+                    });
                 }
                 else {
-                    admPage.value.id = listaAdmPage.value.length + 1;
-                    listaAdmPage.value.push(admPage.value);
-                    toast.add({severity:'success', summary: 'Successful', detail: 'Page Created', life: 3000});
+                    admPageService.value.insert(admPage.value).then((obj: AdmPage) => {
+                        admPage.value = obj;
+
+                        listaAdmPage.value.push(admPage.value);
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Page Created', life: 3000});
+                    });    
                 }
 
                 admPage.value = emptyAdmPage;

@@ -1,4 +1,5 @@
 <template>
+    <BarraMenu></BarraMenu>
     <Toast></Toast>
 
     <Panel header="Configuration Page" class="p-mb-2">
@@ -83,7 +84,7 @@ export default {
         const deleteDialog = ref<boolean>(false);
 
         onMounted(() => {
-            admPageService.value.findAllWithProfiles().then(item => listaAdmPage.value = item);
+            admPageService.value.findAll().then(item => listaAdmPage.value = item);
 
             cols.value = [
                 { field: 'id', header: 'Id' },
@@ -130,10 +131,12 @@ export default {
         }
 
         const onDelete = () => {
-            listaAdmPage.value = listaAdmPage.value.filter((val: AdmPage) => val.id !== admPage.value.id);
-            deleteDialog.value = false;
-            admPage.value = emptyAdmPage;
-            toast.add({severity:'success', summary: 'Successful', detail: 'Page Deleted', life: 3000});
+            admPageService.value.delete(admPage.value.id).then(() => {
+                listaAdmPage.value = listaAdmPage.value.filter((val: AdmPage) => val.id !== admPage.value.id);
+                deleteDialog.value = false;
+                admPage.value = emptyAdmPage;
+                toast.add({severity:'success', summary: 'Successful', detail: 'Page Deleted', life: 3000});
+            });
         };
 
         const exportPdf = () => {
