@@ -14,9 +14,9 @@
         </a>  
       </template>
       <template #end>
-        <div v-if="user">
-            <i class="fa fa-user-circle mr-1"></i>
-            <a class="mr-1">{{username}}</a>
+        <div v-if="username">
+            <i class="pi pi-user p-mr-1"></i>
+            <a class="p-mr-5">{{username}}</a>
             <Button label="Logout" icon="pi pi-power-off" @click="logout" />
         </div>
       </template>
