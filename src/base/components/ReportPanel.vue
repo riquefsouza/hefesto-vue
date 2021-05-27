@@ -3,11 +3,15 @@
         <div class="p-field p-col-12 p-md-4">
             <label for="cmbTypeReport">Choose the type of report:</label>
             <Dropdown id="cmbTypeReport" v-model="selectedTypeReport" :options="typeReport"
-                optionLabel="label" optionGroupLabel="label" optionGroupChildren="items" />
+                optionLabel="label" optionGroupLabel="label" optionGroupChildren="items" 
+                @change="$emit('changeTypeReport', { pTypeReport: selectedTypeReport })">
+            </Dropdown>
         </div>
         <div class="p-field p-col-12 p-md-4">
             <label for="forceDownload" style="margin: 4px;">Force Download:</label>
-            <Checkbox id="forceDownload" v-model="forceDownload" :binary="true"></Checkbox>
+            <Checkbox id="forceDownload" v-model="selectedForceDownload" :binary="true" 
+                @change="$emit('changeForceDownload', { forceDownload: selectedForceDownload })">
+            </Checkbox>
         </div>
     </div>
 </template>
@@ -21,20 +25,15 @@ export default {
         const reportService = ref<ReportService>(new ReportService());
         const typeReport = ref<SelectItemGroup[]>();
         const selectedTypeReport = ref<SelectItemGroup>();
-        const forceDownload = ref<boolean>(false);
+        const selectedForceDownload = ref<boolean>(true);
 
         onMounted(() => {
             typeReport.value = reportService.value.getTypeReport();
             selectedTypeReport.value = PDFReport;
-            forceDownload.value = false;            
+            selectedForceDownload.value = true;            
         })
-/*
-        watch(selectedTypeReport, () => {
-            const _selectedTypeReport: SelectItemGroup = selectedTypeReport.value as SelectItemGroup;
-            console.log('The selectedTypeReport value is: ' + _selectedTypeReport.label)
-        })
-*/
-        return { reportService, typeReport, selectedTypeReport, forceDownload }
+
+        return { reportService, typeReport, selectedTypeReport, selectedForceDownload }
     }
 }
 </script>

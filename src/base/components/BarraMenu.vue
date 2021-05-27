@@ -14,7 +14,11 @@
         </a>  
       </template>
       <template #end>
-        <Button label="Logout" icon="pi pi-power-off" @click="logout" />
+        <div v-if="user">
+            <i class="fa fa-user-circle mr-1"></i>
+            <a class="mr-1">{{username}}</a>
+            <Button label="Logout" icon="pi pi-power-off" @click="logout" />
+        </div>
       </template>
     </Menubar>
   </div>
@@ -29,6 +33,8 @@ export default {
   setup() {
     const userService = ref<UserService>(new UserService());
     const logged = ref(false);
+
+    const username = ref<string>(userService.value.getUserName());
 
     const logout = () => {
       userService.value.logout();
@@ -56,7 +62,7 @@ export default {
       logged.value = userService.value.isLogged();
     })
 
-    return { logged, menuItems, logout, userService }
+    return { logged, menuItems, logout, userService, username }
   }
 }
 </script>

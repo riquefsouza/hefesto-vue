@@ -3,7 +3,7 @@
     <Toast></Toast>
 
     <Panel header="Configuration User" class="p-mb-2">
-        <ReportPanel></ReportPanel>
+        <ReportPanel @changeTypeReport="onTypeReportChange" @changeForceDownload="onForceDownloadChange"></ReportPanel>
     </Panel>
 
     <Toolbar class="p-mb-4">
@@ -67,6 +67,8 @@ import AdmUserService from '@/admin/services/AdmUserService';
 import { AdmUser, emptyAdmUser } from '@/admin/models/AdmUser';
 import { ExportService } from '@/base/services/ExportService';
 import { StorageService } from '@/base/services/StorageService';
+import { ItypeReport, PDFReport, SelectItemGroup } from '@/base/services/ReportService';
+import { ReportParamForm, emptyReportParamForm } from '@/base/models/ReportParamsForm';
 
 export default {
     setup() {
@@ -85,6 +87,10 @@ export default {
         const exportColumns = ref<any[]>([]);
         const deleteDialog = ref<boolean>(false);
 
+        const selectedTypeReport = ref<ItypeReport>();
+        const selectedForceDownload = ref(true);
+        const reportParamForm = ref<ReportParamForm>(emptyReportParamForm);
+
         onMounted(() => {
             admUserService.value.findAll().then(item => listaAdmUser.value = item);
 
@@ -98,10 +104,28 @@ export default {
             ];
 
             exportColumns.value= cols.value.map(col => ({title: col.header, dataKey: col.field}));
+
+            selectedTypeReport.value = PDFReport.value;
         })
 
+        const onTypeReportChange = (param: { pTypeReport: SelectItemGroup }) => {
+            if (param.pTypeReport.value){
+                selectedTypeReport.value = param.pTypeReport.value;
+                reportParamForm.value = { reportType: param.pTypeReport.value.type, forceDownload: selectedForceDownload.value };
+            }        
+        }
+
+        const onForceDownloadChange = (param: { forceDownload: boolean }) => {
+            selectedForceDownload.value = param.forceDownload;
+            if (selectedTypeReport.value){
+                reportParamForm.value = { reportType: selectedTypeReport.value.type, forceDownload: param.forceDownload };
+            }
+        }
+
         const onExport = () => {
-            toast.add({severity:'info', summary: 'User Exported', detail: 'Users Exported', life: 3000});
+            admUserService.value.report(reportParamForm.value).then(() => {
+                toast.add({ severity: 'info', summary: 'User Exported', detail: 'User Exported', life: 3000 });
+            });
         }
 
         const onCancel = () => {
@@ -161,7 +185,8 @@ export default {
         }
 
         return { listaAdmUser, admUser, selectedAdmUser, submitted, deleteDialog,
-            onExport, onCancel, onInsert, onEdit, confirmDelete, hideDeleteDialog, onDelete, exportPdf, exportExcel }
+            onExport, onCancel, onInsert, onEdit, confirmDelete, hideDeleteDialog, onDelete, exportPdf, exportExcel,
+            onTypeReportChange, onForceDownloadChange }
     }
 }
 </script>

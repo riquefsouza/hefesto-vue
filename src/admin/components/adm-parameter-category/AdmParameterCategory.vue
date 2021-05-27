@@ -3,7 +3,7 @@
     <Toast></Toast>
 
     <Panel header="Configuration Parameter Category" class="p-mb-2">
-        <ReportPanel></ReportPanel>
+        <ReportPanel @changeTypeReport="onTypeReportChange" @changeForceDownload="onForceDownloadChange"></ReportPanel>
     </Panel>
 
     <Toolbar class="p-mb-4">
@@ -90,6 +90,8 @@ import { useToast } from 'primevue/usetoast';
 
 import AdmParameterCategoryService from '@/admin/services/AdmParameterCategoryService';
 import { AdmParameterCategory, emptyAdmParameterCategory } from '@/admin/models/AdmParameterCategory';
+import { ItypeReport, PDFReport, SelectItemGroup } from '@/base/services/ReportService';
+import { ReportParamForm, emptyReportParamForm } from '@/base/models/ReportParamsForm';
 
 export default {
     setup() {
@@ -105,12 +107,35 @@ export default {
         const filters = ref({});
         const submitted = ref(false);
 
+        const selectedTypeReport = ref<ItypeReport>();
+        const selectedForceDownload = ref(true);
+        const reportParamForm = ref<ReportParamForm>(emptyReportParamForm);
+
         onMounted(() => {
             admParameterCategoryService.value.findAll().then(item => listaAdmParameterCategory.value = item);
+
+            selectedTypeReport.value = PDFReport.value;
         })
 
+        const onTypeReportChange = (param: { pTypeReport: SelectItemGroup }) => {
+            if (param.pTypeReport.value){
+                selectedTypeReport.value = param.pTypeReport.value;
+                reportParamForm.value = { reportType: param.pTypeReport.value.type, forceDownload: selectedForceDownload.value };
+            }        
+        }
+
+        const onForceDownloadChange = (param: { forceDownload: boolean }) => {
+            selectedForceDownload.value = param.forceDownload;
+            if (selectedTypeReport.value){
+                reportParamForm.value = { reportType: selectedTypeReport.value.type, forceDownload: param.forceDownload };
+            }
+        }
+
         const onExport = () => {
-            toast.add({severity:'info', summary: 'Parameter Category Exported', detail: 'Parameter Category Exported', life: 3000});
+            admParameterCategoryService.value.report(reportParamForm.value).then(() => {
+                toast.add({ severity: 'info', summary: 'Parameter Category Exported', 
+                    detail: 'Parameter Category Exported', life: 3000 });
+            });
         }
 
         const onCancel = () => {
@@ -189,7 +214,8 @@ export default {
 
         return { dt, listaAdmParameterCategory, admParameterCategoryDialog, deleteAdmParameterCategoryDialog, deleteAdmParameterCategoriesDialog, 
             admParameterCategory, selectedAdmParameterCategories, filters, submitted, onExport, onCancel, onInsert, hideDialog, onSave, onEdit,
-            confirmDeleteAdmParameterCategory, deleteAdmParameterCategory, confirmDeleteSelected, deleteSelectedAdmParameterCategories}
+            confirmDeleteAdmParameterCategory, deleteAdmParameterCategory, confirmDeleteSelected, deleteSelectedAdmParameterCategories,
+            onTypeReportChange, onForceDownloadChange }
     }
 }
 </script>
