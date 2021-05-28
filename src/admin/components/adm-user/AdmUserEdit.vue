@@ -107,7 +107,7 @@ export default {
         }
 
         const onCancel = () => {
-            router.push('/admUser');
+            router.push('/admin/admUser');
         }
 
         const onSave = () => {
@@ -133,7 +133,7 @@ export default {
                 }
 
                 admUser.value = emptyAdmUser;
-                router.push('/admUser');
+                router.push('/admin/admUser');
             }
         };
 

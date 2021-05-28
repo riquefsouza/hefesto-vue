@@ -6,6 +6,7 @@ import { AdmProfile } from '@/admin/models/AdmProfile';
 import { AdmUser } from '@/admin/models/AdmUser';
 import { ReportParamForm } from '@/base/models/ReportParamsForm';
 import * as FileSaver from 'file-saver';
+import { MenuItemDTO } from '@/base/models/MenuItemDTO';
 
 export default class AdmProfileService {
 
@@ -275,6 +276,23 @@ export default class AdmProfileService {
             });
         });
 
+        return res;
+    }
+
+    public mountMenu(obj: number[]): Promise<MenuItemDTO[]> {
+        const res = new Promise<MenuItemDTO[]>((resolve, reject) => {
+            const url = `${this.PATH}/mountMenu`;
+            const config = this.tokenService.getAuth();
+            axios.post<MenuItemDTO[]>(url, obj, config)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                console.log(error.message);
+                reject(error.message);
+            });
+        });
+                
         return res;
     }
 

@@ -215,7 +215,7 @@ export default {
         }
 
         const onCancel = () => {
-            router.push("/");
+            router.push("/home");
         }
 
         const onInsert = () => {

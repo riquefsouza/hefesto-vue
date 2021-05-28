@@ -2,14 +2,14 @@
   <div>
     <Menubar class="p-mb-2" :style="logged ? {display: 'none'} : {display: ''}">
       <template #start>
-        <a href="/">
+        <a href="/home">
           <img alt="logo" src="@/assets/logo.png" height="40" class="p-mr-2" />
         </a>  
       </template>
     </Menubar>
     <Menubar :model="menuItems" class="p-mb-2" :style="logged ? {display: ''} : {display: 'none'}">
       <template #start>
-        <a href="/">
+        <a href="/home">
           <img alt="logo" src="@/assets/logo.png" height="40" class="p-mr-2" />
         </a>  
       </template>
@@ -40,23 +40,27 @@ export default {
       userService.value.logout();
       router.push('/');
     }
+        
+    const menuItems = ref(userService.value.getMenuItems());
 
+    /*
     const menuItems = ref([
       {
-        label: "Configurações",
+        label: "Settings",
         items: [
-          { label: "Parameter Category", to: '/admParameterCategory' },
-          { label: "Parameter", to: '/admParameter' },
-          { label: "Profile", to: '/admProfile' },
-          { label: "Page", to: '/admPage' },
-          { label: "Menu", to: '/admMenu' },
-          { label: "User", to: '/admUser' },
-          { label: "Change Password", to: '/changePasswordEdit' },
+          { label: "Parameter Category", to: '/admin/admParameterCategory' },
+          { label: "Parameter", to: '/admin/admParameter' },
+          { label: "Profile", to: '/admin/admProfile' },
+          { label: "Page", to: '/admin/admPage' },
+          { label: "Menu", to: '/admin/admMenu' },
+          { label: "User", to: '/admin/admUser' },
+          { label: "Change Password", to: '/admin/changePasswordEdit' },
           { label: "Sobre", to: '/about' },
           { label: "Sair", command: () => {logout();} }
         ],
       },
     ])
+    */
 
     onMounted(() => {
       logged.value = userService.value.isLogged();

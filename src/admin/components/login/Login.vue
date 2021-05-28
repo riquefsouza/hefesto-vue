@@ -46,10 +46,12 @@ import './Login.css';
 
 import { AdmUser, cleanAdmUser, emptyAdmUser } from '@/admin/models/AdmUser';
 import LoginService from '@/admin/services/LoginService';
+import UserService from '@/base/user/UserService';
 
 export default {
     setup() {
         const loginService = ref<LoginService>(new LoginService());
+        const userService = ref<UserService>(new UserService());
         
         const admUser = ref<AdmUser>(emptyAdmUser);
         const submitted = ref<boolean>(false);
@@ -61,6 +63,7 @@ export default {
 
         onMounted(() => {
             onClean();
+            userService.value.logout();
         })
 
         const login = () => {

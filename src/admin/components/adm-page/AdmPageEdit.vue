@@ -97,7 +97,7 @@ export default {
         }
 
         const onCancel = () => {
-            router.push('/admPage');
+            router.push('/admin/admPage');
         }
 
         const onSave = () => {
@@ -123,7 +123,7 @@ export default {
                 }
 
                 admPage.value = emptyAdmPage;
-                router.push('/admPage');
+                router.push('/admin/admPage');
             }
         };
 

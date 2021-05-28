@@ -53,7 +53,7 @@ export default {
         }
 
         const onCancel = () => {
-            router.push('/admParameter');
+            router.push('/admin/admParameterCategory');
         }
 
         const onSave = () => {
@@ -79,7 +79,7 @@ export default {
                 }
 
                 admParameterCategory.value = emptyAdmParameterCategory;
-                router.push('/admParameterCategory');
+                router.push('/admin/admParameterCategory');
             }
         };
 

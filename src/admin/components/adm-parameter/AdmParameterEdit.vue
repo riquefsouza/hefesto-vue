@@ -75,7 +75,7 @@ export default {
         }
 
         const onCancel = () => {
-            router.push('/admParameter');
+            router.push('/admin/admParameter');
         }
 
         const onSave = () => {
@@ -101,7 +101,7 @@ export default {
                 }
 
                 admParameter.value = emptyAdmParameter;
-                router.push('/admParameter');
+                router.push('/admin/admParameter');
             }
         };
 

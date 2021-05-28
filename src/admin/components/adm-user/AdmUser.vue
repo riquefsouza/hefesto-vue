@@ -129,7 +129,7 @@ export default {
         }
 
         const onCancel = () => {
-            router.push("/");
+            router.push("/home");
         }
 
         const onInsert = () => {
@@ -138,7 +138,7 @@ export default {
 
             // storageService.value.setStorage(admUser);
             storageService.value.persistObj('admUser', admUser.value);
-            router.push('/admUserEdit');
+            router.push('/admin/admUserEdit');
         };
 
         const onEdit = (param: AdmUser) => {
@@ -146,7 +146,7 @@ export default {
 
             // storageService.value.setStorage(admUser);
             storageService.value.persistObj('admUser', admUser.value);
-            router.push('/admUserEdit');
+            router.push('/admin/admUserEdit');
         }
 
         const confirmDelete = (param: AdmUser) => {
