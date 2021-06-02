@@ -16,8 +16,7 @@
       <template #end>
         <div v-if="username">
             <i class="pi pi-user p-mr-1"></i>
-            <a class="p-mr-5">{{username}}</a>
-            <Button label="Logout" icon="pi pi-power-off" @click="logout" />
+            <span class="p-mr-5">{{username}}</span>
         </div>
       </template>
     </Menubar>
@@ -64,6 +63,11 @@ export default {
 
     onMounted(() => {
       logged.value = userService.value.isLogged();
+
+      if (menuItems.value) {
+        menuItems.value.push({ label: 'Sair', icon: 'pi pi-fw pi-power-off', command: () => { logout(); } });
+      }
+
     })
 
     return { logged, menuItems, logout, userService, username }

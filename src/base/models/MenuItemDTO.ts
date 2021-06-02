@@ -3,13 +3,16 @@ export const emptyMenuItemDTO: MenuItemDTO = {
     routerLink: '',
     url: '',
     to: '',
-    items: []
+    items: [],
 }
 
 export interface MenuItemDTO {
     label: string;
-    routerLink: string;
-    url: string;
-    to: string;
-    items: MenuItemDTO[];
+    icon?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    command?: (event?: any) => void;
+    routerLink?: string;
+    url?: string;
+    to?: string;
+    items?: MenuItemDTO[];    
 }
