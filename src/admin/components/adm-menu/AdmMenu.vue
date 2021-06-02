@@ -248,12 +248,39 @@ export default {
                 listaAdmMenu.value = listaAdmMenu.value.filter((val: AdmMenu) => val.id !== admMenu.value.id);
                 deleteDialog.value = false;
                 admMenu.value = emptyAdmMenu;
+                updateMenusTree(listaAdmMenu.value);
                 toast.add({severity:'success', summary: 'Successful', detail: 'Menu Deleted', life: 3000});
             });
         };
 
         const onSave = () => {
             submitted.value = true;
+
+			if (admMenu.value.description.trim()) {
+                if (admMenu.value.id) {
+                    admMenuService.value.update(admMenu.value).then((obj: AdmMenu) => {
+                        admMenu.value = obj;
+
+                        listaAdmMenu.value[admMenuService.value
+                            .findIndexById(listaAdmMenu.value, admMenu.value.id)] = admMenu.value;
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Menu Updated', life: 3000});
+                    });
+                }
+                else {
+                    admMenuService.value.insert(admMenu.value).then((obj: AdmMenu) => {
+                        admMenu.value = obj;
+
+                        admMenu.value.id = listaAdmMenu.value.length + 1;
+                        listaAdmMenu.value.push(admMenu.value);
+                        toast.add({severity:'success', summary: 'Successful', detail: 'Menu Created', life: 3000});
+                    });
+                }
+
+                admMenuDialog.value = false;
+                admMenu.value = emptyAdmMenu;
+                updateMenusTree(listaAdmMenu.value);
+            }
+
         }
 
         return { listaAdmMenu, admMenu, selectedAdmMenu, submitted, admMenuDialog, listaNodeMenu, selectedNodeMenu, 

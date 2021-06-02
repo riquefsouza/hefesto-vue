@@ -23,6 +23,7 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+```
 npm install --save vue-router@next
 npm install --save mitt
 npm install --save axios
@@ -33,3 +34,6 @@ npm install --save xlsx
 npm install --save file-saver
 npm install --save @types/file-saver
 npm install --save jwt-decode
+npm install bcryptjs --save
+npm install @types/bcryptjs --save-dev
+```

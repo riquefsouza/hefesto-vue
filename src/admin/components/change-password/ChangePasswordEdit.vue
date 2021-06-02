@@ -103,7 +103,7 @@ export default {
                     return;
                 }
 
-                if (changePasswordService.value.updatePassword(admUser.value.newPassword)) {
+                if (changePasswordService.value.updatePassword(admUser.value)) {
                     toast.add({ severity: 'success', summary: 'Successful',
                         detail: 'Password changed successfully!', life: 3000
                     });
